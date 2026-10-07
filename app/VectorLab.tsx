@@ -6,23 +6,25 @@ import { Doc, analyze, cosine, defaults } from '@/lib/tfidf';
 
 type Data = { vocab: string[]; words: string[][]; matrix: Record<string, number>[] };
 
+const f4 = (n: number) => (Number.isFinite(n) ? n.toFixed(4) : '0.0000');
 const fmt = (n: number) => (Number.isFinite(n) ? n.toFixed(2) : '0.00');
 const A_COLOR = 'var(--va)', B_COLOR = 'var(--vb)';
 const COLORS = [A_COLOR, B_COLOR, 'var(--vc)', 'var(--vd)', 'var(--ve)', 'var(--vf)'];
 
 const MAXDOCS = 6;
+const CSTEPS = ['Vectors', 'Overlap', 'Size', 'Divide', 'Diagram'];
 const STEPS = [
   { title: 'Write your documents', short: 'Documents' },
   { title: 'Every word gets a number', short: 'Numbers' },
   { title: 'Put the numbers in a row', short: 'Vector' },
   { title: 'Compare two documents', short: 'Compare' },
-  { title: 'Now see it as arrows', short: 'Arrows' },
+  { title: 'Calculate the similarity', short: 'Calculate' },
 ];
 
 /* ---------- step 4: draggable arrows ---------- */
 const S = 480, PAD = 56, SIDE = S - PAD * 2, MAX = 10;
 type P = { x: number; y: number };
-function Arrows({ a, b, onChange, ro, xl, yl, an, bn }: { a: P; b: P; onChange: (k: 'a' | 'b', p: P) => void; ro?: boolean; xl: string; yl: string; an: string; bn: string }) {
+function Arrows({ a, b, onChange, ro, xl, yl, an, bn, extra = [] }: { a: P; b: P; onChange: (k: 'a' | 'b', p: P) => void; ro?: boolean; xl: string; yl: string; an: string; bn: string; extra?: { p: P; color: string; label: string }[] }) {
   const ref = useRef<SVGSVGElement>(null);
   const [active, setActive] = useState<'a' | 'b' | null>(null);
   const px = (v: number) => PAD + (v / MAX) * SIDE, py = (v: number) => S - PAD - (v / MAX) * SIDE;
@@ -47,6 +49,11 @@ function Arrows({ a, b, onChange, ro, xl, yl, an, bn }: { a: P; b: P; onChange: 
       <line x1={PAD} y1={S - PAD} x2={S - PAD} y2={S - PAD} className="vw-axis" /><line x1={PAD} y1={S - PAD} x2={PAD} y2={PAD} className="vw-axis" />
       <text x={S / 2} y={S - 14} textAnchor="middle" className="vw-axname">{xl} →</text>
       <text x={16} y={S / 2} textAnchor="middle" className="vw-axname" transform={`rotate(-90 16 ${S / 2})`}>{yl} →</text>
+      {extra.map(e => <g key={e.label} opacity=".7">
+        <line x1={px(0)} y1={py(0)} x2={px(e.p.x)} y2={py(e.p.y)} style={{ stroke: e.color }} strokeWidth="3" strokeLinecap="round" />
+        <circle cx={px(e.p.x)} cy={py(e.p.y)} r="9" style={{ fill: e.color }} />
+        <text x={Math.min(S - 64, Math.max(64, px(e.p.x)))} y={Math.max(24, py(e.p.y) + 28)} textAnchor="middle" className="vw-aname" style={{ fill: e.color, fontSize: 14 }}>{e.label}</text>
+      </g>)}
       {arrow('a', a, A_COLOR, an)}{arrow('b', b, B_COLOR, bn)}
     </svg>
   );
@@ -70,7 +77,7 @@ export default function VectorLab({ docs: initial }: { docs: Doc[]; data?: Data;
     const peak = (w: string) => Math.max(0, ...data.matrix.map(r => r[w] || 0));
     return data.vocab.length <= 30 ? data.vocab : [...data.vocab].sort((p, q) => peak(q) - peak(p)).slice(0, 30).sort();
   }, [data]);
-  const [wx, setWx] = useState(''); const [wy, setWy] = useState(''); const [free, setFree] = useState(false);
+  const [wx, setWx] = useState(''); const [wy, setWy] = useState(''); const [free, setFree] = useState(false); const [cs, setCs] = useState(0);
   const ready = docs.length >= 2 && data.vocab.length > 0;
   const setText = (i: number, t: string) => setTexts(x => x.map((y, j) => (j === i ? t : y)));
 
@@ -87,10 +94,25 @@ export default function VectorLab({ docs: initial }: { docs: Doc[]; data?: Data;
   const v = verdict(sim);
 
   const byPeak = [...data.vocab].sort((p, q) => Math.max(...data.matrix.map(r => r[q] || 0)) - Math.max(...data.matrix.map(r => r[p] || 0)));
-  const ax = data.vocab.includes(wx) ? wx : byPeak[0] || '', ay = data.vocab.includes(wy) && wy !== '' ? wy : byPeak[1] || byPeak[0] || '';
+  const pair = useMemo(() => {
+    const c = byPeak.slice(0, 12); let best: [string, string] = [byPeak[0] || '', byPeak[1] || byPeak[0] || ''], sc = -1;
+    for (let i = 0; i < c.length; i++) for (let j = i + 1; j < c.length; j++) {
+      const cover = data.matrix.filter(r => (r[c[i]] || 0) > 0 || (r[c[j]] || 0) > 0).length;
+      const mix = data.matrix.filter(r => (r[c[i]] || 0) > 0 && (r[c[j]] || 0) > 0).length;
+      const score = cover * 10 - mix;
+      if (score > sc) { sc = score; best = [c[i], c[j]]; }
+    }
+    return best;
+  }, [data]);
+  const ax = data.vocab.includes(wx) ? wx : pair[0], ay = data.vocab.includes(wy) ? wy : pair[1];
   const raw = { a: { x: ra[ax] || 0, y: ra[ay] || 0 }, b: { x: rb[ax] || 0, y: rb[ay] || 0 } };
-  const k = 8 / Math.max(0.0001, raw.a.x, raw.a.y, raw.b.x, raw.b.y);
+  const k = 8 / Math.max(0.0001, ...data.matrix.map(r => Math.max(r[ax] || 0, r[ay] || 0)));
+  const extra = docs.map((_, i) => i).filter(i => i !== ia && i !== ib).map(i => ({ p: { x: (data.matrix[i][ax] || 0) * k, y: (data.matrix[i][ay] || 0) * k }, color: COLORS[i % COLORS.length], label: docs[i].name }));
   const RA = { x: raw.a.x * k, y: raw.a.y * k }, RB = { x: raw.b.x * k, y: raw.b.y * k };
+  const hits = data.vocab.filter(w => (ra[w] || 0) > 0 && (rb[w] || 0) > 0);
+  const dk = 8 / Math.max(0.0001, la, lb), th = Math.acos(Math.min(1, Math.max(-1, sim)));
+  const DA = { x: la * dk, y: 0 }, DB = { x: lb * dk * Math.cos(th), y: lb * dk * Math.sin(th) };
+  const theta = (th * 180) / Math.PI;
   const [fa, fb] = free ? [pa, pb] : [RA, RB];
   const lFa = Math.hypot(fa.x, fa.y), lFb = Math.hypot(fb.x, fb.y);
   const simP = lFa && lFb ? (fa.x * fb.x + fa.y * fb.y) / (lFa * lFb) : 0, vP = verdict(simP);
@@ -170,27 +192,67 @@ export default function VectorLab({ docs: initial }: { docs: Doc[]; data?: Data;
 
       {step === 4 && !ready && <div className="vw-body"><p className="vw-lead">Go back and write text in at least 2 documents first.</p></div>}
       {step === 4 && ready && <div className="vw-body">
-        <p className="vw-lead">Each document becomes an arrow. Pick <b>two documents</b> and <b>two words</b> (the two directions of the picture). The closer the arrows point the same way, the more similar the documents.</p>
-        <div className="vw-two"><div><span style={{ color: A_COLOR }}>Document A</span><Picker value={ia} onPick={setA} color={A_COLOR} skip={ib} /></div><div><span style={{ color: B_COLOR }}>Document B</span><Picker value={ib} onPick={setB} color={B_COLOR} skip={ia} /></div></div>
-        {!free && <div className="vw-axes">
-          <label>Across → <select value={ax} onChange={e => setWx(e.target.value)}>{data.vocab.map(w => <option key={w}>{w}</option>)}</select></label>
-          <label>Up ↑ <select value={ay} onChange={e => setWy(e.target.value)}>{data.vocab.map(w => <option key={w}>{w}</option>)}</select></label>
-        </div>}
-        <div className="vw-free">
-          <Arrows a={free ? pa : RA} b={free ? pb : RB} ro={!free} xl={free ? 'word 1' : ax} yl={free ? 'word 2' : ay} an={free ? 'Document A' : docs[ia].name} bn={free ? 'Document B' : docs[ib].name}
-            onChange={(k, p) => (k === 'a' ? setPa(p) : setPb(p))} />
-          <div>
-            {free && <div className="vw-presets"><span>Try:</span>
-              <button onClick={() => { setPa({ x: 6, y: 3 }); setPb({ x: 3, y: 1.5 }); }}>Same direction</button>
-              <button onClick={() => { setPa({ x: 8, y: 0 }); setPb({ x: 0, y: 8 }); }}>Nothing in common</button>
-              <button onClick={() => { setPa({ x: 6, y: 3 }); setPb({ x: 3, y: 7 }); }}>In between</button>
-            </div>}
-            <div className={`vw-result ${vP.tone}`}><span>{free ? 'SIMILARITY' : 'SIMILARITY (THESE 2 WORDS)'}</span><strong>{Math.round(simP * 100)}%</strong><em>{vP.word}</em></div>
-            {!free && <p className="vw-note">With <b>all {data.vocab.length} words</b> the similarity of {docs[ia].name} and {docs[ib].name} is <b>{Math.round(sim * 100)}%</b>. A picture only has room for 2 words.</p>}
-            <p className="vw-note">The angle between the arrows is <b>{angle.toFixed(0)}°</b>. A small angle means high similarity.</p>
-            <button className="vw-link" onClick={() => setFree(!free)}>{free ? 'Back to my documents' : 'Play with free arrows instead'}</button>
+        {free ? <>
+          <p className="vw-lead">Free arrows: <b>drag the round tips</b>. This is a vector with only 2 numbers, so you can see it. The closer the arrows point the same way, the higher the similarity.</p>
+          <div className="vw-free">
+            <Arrows a={pa} b={pb} xl="number 1" yl="number 2" an="Vector A" bn="Vector B" onChange={(k, p) => (k === 'a' ? setPa(p) : setPb(p))} />
+            <div>
+              <div className="vw-presets"><span>Try:</span>
+                <button onClick={() => { setPa({ x: 6, y: 3 }); setPb({ x: 3, y: 1.5 }); }}>Same direction</button>
+                <button onClick={() => { setPa({ x: 8, y: 0 }); setPb({ x: 0, y: 8 }); }}>Nothing in common</button>
+                <button onClick={() => { setPa({ x: 6, y: 3 }); setPb({ x: 3, y: 7 }); }}>In between</button>
+              </div>
+              <div className={`vw-result ${vP.tone}`}><span>SIMILARITY</span><strong>{Math.round(simP * 100)}%</strong><em>{vP.word}</em></div>
+              <p className="vw-note">The angle between the arrows is <b>{angle.toFixed(0)}°</b>. A small angle means high similarity.</p>
+            </div>
           </div>
-        </div>
+        </> : <>
+          <ol className="vw-sub">{CSTEPS.map((t, n) => <li key={t}><button className={n === cs ? 'now' : n < cs ? 'done' : ''} onClick={() => setCs(n)}>{n + 1}. {t}</button></li>)}</ol>
+          {cs === 0 && <>
+            <p className="vw-lead">Pick the two documents to compare. Each one is a vector: a row of numbers.</p>
+            <div className="vw-two"><div><span style={{ color: A_COLOR }}>Vector A</span><Picker value={ia} onPick={setA} color={A_COLOR} skip={ib} /></div><div><span style={{ color: B_COLOR }}>Vector B</span><Picker value={ib} onPick={setB} color={B_COLOR} skip={ia} /></div></div>
+            <div className="vw-vec"><span style={{ color: A_COLOR }}>A =</span> [ {data.vocab.map(w => fmt(ra[w] || 0)).join(', ')} ]</div>
+            <div className="vw-vec"><span style={{ color: B_COLOR }}>B =</span> [ {data.vocab.map(w => fmt(rb[w] || 0)).join(', ')} ]</div>
+          </>}
+          {cs === 1 && <>
+            <p className="vw-lead">We want to know: <b>do the two documents use the same important words?</b> So for every word, multiply A's number by B's number. If a word is missing in one of them, the result is 0.</p>
+            <div className="vw-scroll"><table className="vw-tab vw-wide"><thead><tr><th>word</th><th>A</th><th></th><th>B</th><th></th><th>A × B</th></tr></thead><tbody>
+              {data.vocab.map(w => { const x = ra[w] || 0, y = rb[w] || 0; const hit = x > 0 && y > 0; return <tr key={w} className={hit ? 'hit' : 'miss'}><td>{w}</td><td>{f4(x)}</td><td>×</td><td>{f4(y)}</td><td>=</td><td><b>{f4(x * y)}</b></td></tr>; })}
+            </tbody></table></div>
+            <p className="vw-note">Bright rows are words that <b>both</b> documents have. Only those add something.</p>
+            <div className="vw-big">{hits.length ? hits.map(w => f4((ra[w] || 0) * (rb[w] || 0))).join(' + ') : '0'} = <b>{f4(dot)}</b><small>the “dot product”: how much A and B overlap</small></div>
+          </>}
+          {cs === 2 && <>
+            <p className="vw-lead">Next we need the <b>size</b> of each vector, so that long documents do not win just for being long. Square each number, add the squares, take the square root.</p>
+            <div className="vw-scroll"><table className="vw-tab vw-wide"><thead><tr><th>word</th><th>A × A</th><th>B × B</th></tr></thead><tbody>
+              {data.vocab.map(w => <tr key={w} className={(ra[w] || rb[w]) ? 'hit' : 'miss'}><td>{w}</td><td>{f4((ra[w] || 0) ** 2)}</td><td>{f4((rb[w] || 0) ** 2)}</td></tr>)}
+              <tr className="on"><td>Add up</td><td>{f4(la * la)}</td><td>{f4(lb * lb)}</td></tr>
+            </tbody></table></div>
+            <div className="vw-big"><span style={{ color: A_COLOR }}>|A|</span> = √{f4(la * la)} = <b>{f4(la)}</b></div>
+            <div className="vw-big"><span style={{ color: B_COLOR }}>|B|</span> = √{f4(lb * lb)} = <b>{f4(lb)}</b></div>
+          </>}
+          {cs === 3 && <>
+            <p className="vw-lead">Now put it together. Divide the overlap by the two sizes. The result is always between <b>0</b> (nothing in common) and <b>1</b> (same direction).</p>
+            <div className="vw-big"><small>Top (overlap, from part 2)</small>{f4(dot)}</div>
+            <div className="vw-big"><small>Bottom (size of A × size of B, from part 3)</small>{f4(la)} × {f4(lb)} = {f4(la * lb)}</div>
+            <div className="vw-big"><small>Top / Bottom</small>{f4(dot)} / {f4(la * lb)} = <b>{sim.toFixed(3)}</b></div>
+            <div className="vw-big"><small>As a percentage (× 100)</small>{sim.toFixed(3)} × 100 = <b>{(sim * 100).toFixed(1)}%</b></div>
+            <div className={`vw-result ${v.tone}`}><span>SIMILARITY</span><strong>{Math.round(sim * 100)}%</strong><em>{v.word}</em></div>
+          </>}
+          {cs === 4 && <>
+            <p className="vw-lead">The same two vectors as arrows. The <b>angle</b> between them is <b>{theta.toFixed(0)}°</b>. A small angle means similar documents.</p>
+            <div className="vw-free">
+              <Arrows a={DA} b={DB} ro xl="" yl="" an={docs[ia].name} bn={docs[ib].name} onChange={() => {}} />
+              <div><div className={`vw-result ${v.tone}`}><span>SIMILARITY</span><strong>{Math.round(sim * 100)}%</strong><em>{v.word}</em></div>
+                <p className="vw-note">Each arrow's length is the vector's length.</p></div>
+            </div>
+          </>}
+          <div className="vw-subnav">
+            <button disabled={cs === 0} onClick={() => setCs(cs - 1)}>← Previous</button>
+            <button disabled={cs === CSTEPS.length - 1} onClick={() => setCs(cs + 1)}>Next part →</button>
+          </div>
+        </>}
+        <button className="vw-link" onClick={() => setFree(!free)}>{free ? 'Back to the calculation' : 'See it as arrows (free sandbox)'}</button>
       </div>}
 
       <div className="vw-nav">

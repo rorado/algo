@@ -274,3 +274,23 @@ body{font-size:16px;line-height:1.55}
 /* light theme: body sits outside .app, so text colour must be set on .app */
 .app{color:var(--text)}
 .app.light .vw-title,.app.light .lab-head h2{color:var(--text)}
+.vw-tab{border-collapse:collapse;margin:14px 0;font-size:17px;width:100%;max-width:460px}
+.vw-tab th{font:500 13px var(--mono);letter-spacing:.6px;text-align:left;color:var(--muted);padding:6px 10px;border-bottom:1px solid var(--line2)}
+.vw-tab td{padding:8px 10px;border-bottom:1px solid var(--line)}.vw-tab td+td{font-family:var(--mono)}
+.vw-tab td i{display:inline-block;width:12px;height:12px;border-radius:50%;margin-right:10px}
+.vw-tab tr.on{font-weight:700}.vw-tab tr:not(.on){opacity:.7}
+.vw-calc-h{font-size:19px;margin:26px 0 8px;color:var(--soft)}.vw-calc-h b{color:var(--accent)}
+.vw-vec{font:18px/1.7 var(--mono);padding:10px 16px;border-radius:12px;background:var(--bg);border:1px solid var(--line2);margin:6px 0;max-width:760px;overflow-wrap:anywhere}
+.vw-vec span{font-weight:700}
+.vw-scroll{overflow-x:auto;max-width:760px}.vw-tab.vw-wide{max-width:none}.vw-tab th:not(:first-child),.vw-tab td:not(:first-child){text-align:right}
+.vw-sub{list-style:none;display:flex;flex-wrap:wrap;gap:8px;margin:0 0 20px;padding:0}
+.vw-sub button{padding:8px 16px;border-radius:999px;border:1px solid var(--line2);background:var(--bg);font-size:16px}
+.vw-sub .now{border-color:var(--accent);color:var(--accent);font-weight:700}.vw-sub .done{border-color:var(--mint)}
+.vw-big{font:20px/1.5 var(--mono);margin:14px 0;padding:14px 18px;border-radius:12px;background:var(--bg);border:1px solid var(--line2);max-width:760px}
+.vw-big b{font-size:26px;color:var(--accent)}
+.vw-subnav{display:flex;gap:12px;margin-top:24px}.vw-subnav button{padding:11px 22px;border-radius:12px;border:2px solid var(--line2);background:var(--bg);font-size:17px;font-weight:600}
+.vw-subnav button:last-child:not(:disabled){background:var(--accent);border-color:var(--accent);color:#14121e}
+.vw-subnav button:disabled{opacity:.3;cursor:default}
+.app.light .vw-subnav button:last-child:not(:disabled){color:#fff}
+.vw-tab tr.miss{opacity:.4}.vw-tab tr.hit td{font-weight:600}.vw-tab td:nth-child(3):not(:last-child){text-align:center;color:var(--muted)}
+.vw-big small{display:block;font:500 14px var(--sans);color:var(--muted);margin-bottom:4px}
