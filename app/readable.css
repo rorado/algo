@@ -1,0 +1,180 @@
+/* Readability layer: larger type, stronger contrast, calmer spacing.
+   Loaded after globals.css, so it only overrides what needs to change. */
+:root{--muted:#9ba2aa;--soft:#cdd1d5;--line:#2c3238;--line2:#3a4249}
+.app.light{--muted:#5a616a;--soft:#3a4048;--line:#dcdfe3;--line2:#c8cdd3}
+body{font-size:16px;line-height:1.55}
+.page-wrap{max-width:1240px}
+
+/* Header */
+.top-center{font-size:13px}
+.brand{font-size:18px}
+.brand small{font-size:10px}
+.icon-button{font-size:14px;padding:9px 12px}
+
+/* Hero */
+.hero-copy>p{font-size:19px;line-height:1.65;max-width:480px;color:var(--soft)}
+.hero-proof,.art-caption{font-size:13px;color:var(--muted)}
+.hero-copy h1{letter-spacing:-3px}
+.primary-button,.secondary-button{font-size:15px;padding:14px 20px;border-radius:10px}
+.text-button{font-size:15px;color:var(--soft)}
+.story-nav a{font-size:12px;color:var(--soft)}
+.story-nav a span{color:var(--muted)}
+
+/* Eyebrows / kickers */
+.overline,.panel-kicker,.section-title>span{font-size:12px;letter-spacing:1.2px}
+.section-title h2,.workspace-heading h2{font-size:clamp(30px,3.4vw,42px);line-height:1.12;letter-spacing:-1.2px}
+.section-title p,.workspace-heading p,.stop-copy p,.story-copy p{font-size:17px;line-height:1.65;color:var(--soft);max-width:560px}
+
+/* Editor */
+.select-wrap,.secondary-button,.small-add,.add-wide{font-size:14px}
+.small-add{padding:8px 12px}
+.count-pill{font-size:12px;padding:3px 8px}
+.doc-name{font-size:15px}
+.doc-count,.doc-bottom,.doc-bottom span,.doc-bottom button{font-size:12px;color:var(--muted)}
+.document-card textarea{font-size:16px;line-height:1.55;min-height:64px}
+.panel-head h3,.card-head h3{font-size:20px}
+.pipeline-step{font-size:15px;padding:11px 12px}
+.step-num,.detail-label{font-size:12px}
+.pipeline-detail p{font-size:15px;line-height:1.6;color:var(--soft)}
+.walk-link{font-size:14px}
+.toggle-row{font-size:15px}
+.toggle-row small{font-size:13px;color:var(--muted)}
+.processed-preview span{font-size:12px}
+.processed-preview button{font-size:14px}
+
+/* Metrics */
+.metrics-row span{font-size:12px;color:var(--muted)}
+.metrics-row small{font-size:13px;color:var(--muted)}
+.metrics-row strong{font-size:30px}
+
+/* Formulas and concept visuals */
+.formula-label,.formula-label span,.formula-label button{font-size:12px}
+.math{font-size:20px}
+.fraction{font-size:14px}
+.formula-example{font-size:16px}
+.formula-example b{font-size:20px}
+.visual-head{font-size:12px;color:var(--soft)}
+.visual-note{font-size:15px;line-height:1.6;color:var(--soft)}
+.doc-label{font-size:12px;color:var(--soft)}
+.word-token{font-size:14px;color:var(--soft)}
+.idf-doc small,.idf-doc span{font-size:13px}
+.rarity-scale,.rarity-scale span{font-size:12px;color:var(--soft)}
+.rarity-labels{font-size:13px;color:var(--soft)}
+.tf-paper span,.count-result span{font-size:12px;color:var(--soft)}
+.tf-paper button,.word-count-row button,.stop-source button,.stop-result span{font-size:15px;padding:7px 11px}
+.word-count-row small{font-size:12px}
+.count-result div{font-size:14px;color:var(--soft)}
+.multiply-art b{font-size:14px}
+.multiply-art small{font-size:13px;color:var(--soft)}
+.multiply-art em{font-size:22px}
+.equation-strip{font-size:15px}
+.equation-strip span{font-size:14px;color:var(--soft)}
+.equation-strip b,.equation-strip strong{font-size:20px}
+.filter-arrow small{font-size:12px;color:var(--soft)}
+.inline-toggle{font-size:15px}
+
+/* Matrix */
+.matrix-toolbar,.matrix-toolbar>span{font-size:12px;color:var(--soft)}
+.view-tabs button{font-size:14px;padding:7px 14px}
+.matrix-controls,.matrix-controls input,.matrix-controls select{font-size:14px}
+.matrix-table th{font-size:14px;color:var(--soft)}
+.matrix-table th button{font-size:14px}
+.matrix-table td button{font-size:14px;min-width:68px;padding:11px 8px}
+.matrix-table td button.zero{color:var(--muted)}
+.matrix-foot{font-size:13px;color:var(--soft)}
+.tv-text{font-size:15px;color:var(--soft)}
+.tv-chips button{font-size:14px}
+.tv-chips small{font-size:12px}
+
+/* Vocabulary and importance */
+.table-head{font-size:12px;color:var(--soft)}
+.vocab-row{font-size:15px;padding-block:11px}
+.vocab-row i{font-size:12px;color:var(--muted)}
+.card-foot,.small-explain{font-size:14px;line-height:1.6;color:var(--soft)}
+.rare-badge,.importance-axis{font-size:12px;color:var(--soft)}
+.importance-words button{font-size:15px}
+.importance-words small{font-size:13px;color:var(--soft)}
+
+/* Similarity */
+.sim-doc{font-size:15px}
+.sim-doc code,.sim-link{font-size:13px}
+.sim-link strong{font-size:22px}
+.similarity-matrix{font-size:15px}
+.similarity-foot{font-size:14px;color:var(--soft)}
+
+/* Closing + footer + modals */
+.closing span,footer,footer span,footer button{font-size:14px}
+.closing p{font-size:17px;color:var(--soft)}
+.walk-modal h2,.glossary-modal h2{font-size:28px;letter-spacing:-.8px}
+.walk-modal p{font-size:17px;line-height:1.6;color:var(--soft)}
+.walk-equation span{font-size:12px}
+.walk-equation b{font-size:19px}
+.glossary-row b{font-size:15px}
+.glossary-row p{font-size:15px;line-height:1.55;color:var(--soft)}
+
+/* Hero illustration: bigger labels */
+.hero-art .mini-doc text,.hero-art .vector-box text{font-size:11px}
+.hero-art .vector-box .vector-num{font-size:16px}
+.hero-art .word-cloud text{font-size:15px}
+.hero-art .word-cloud g.num text{font-size:14px}
+
+/* Keyboard focus is clearly visible everywhere */
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:6px}
+
+@media (max-width:760px){
+  body{font-size:15px}
+  .hero-copy>p{font-size:17px}
+}
+
+/* TF-IDF Lab */
+.lab{margin:20px 0 110px;padding:48px;border:1px solid var(--line2);border-radius:26px;background:linear-gradient(180deg,var(--surface),var(--surface2))}
+.lab-kicker{font:500 13px var(--mono);letter-spacing:1.3px;color:var(--accent)}
+.lab-head h2{font:700 clamp(32px,4vw,52px)/1.08 var(--display);letter-spacing:-1.6px;margin:14px 0 14px}
+.lab-head p{font-size:20px;line-height:1.6;color:var(--soft);max-width:720px;margin:0}
+.lab-presets{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:28px 0 30px;font-size:16px;color:var(--muted)}
+.lab-presets button{padding:10px 16px;border:1px solid var(--line2);border-radius:999px;background:var(--surface3);font-size:15px}
+.lab-presets button:hover{border-color:var(--accent);color:var(--text)}
+.lab-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.lab-side{padding:28px;border-radius:20px;background:var(--bg);border:1px solid var(--line2)}
+.lab-in{border-top:4px solid var(--mint)}.lab-out{border-top:4px solid var(--orange)}
+.lab-side-title{font-size:20px;font-weight:600;margin-bottom:20px;display:flex;align-items:center;gap:12px}
+.lab-side-title b{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:var(--surface3);font-size:16px}
+.lab-dots,.lab-docs{display:flex;flex-wrap:wrap;gap:8px;min-height:84px;align-content:flex-start}
+.lab-dots i{width:26px;height:26px;border-radius:7px;background:var(--surface3);border:1px solid var(--line2);transition:all .25s}
+.lab-dots i.on{background:var(--mint);border-color:var(--mint);transform:scale(1.08);box-shadow:0 0 14px rgba(104,219,193,.5)}
+.lab-docs i{width:42px;height:54px;border-radius:7px;background:var(--surface3);border:1px solid var(--line2);display:grid;align-content:center;gap:5px;padding:0 7px;transition:all .25s}
+.lab-docs i span{height:3px;border-radius:2px;background:var(--line2);box-shadow:0 8px 0 var(--line2),0 16px 0 var(--line2)}
+.lab-docs i.on{background:rgba(240,183,120,.18);border-color:var(--orange)}
+.lab-docs i.on span{background:var(--orange);box-shadow:0 8px 0 var(--orange),0 16px 0 var(--orange)}
+.lab-caption{font-size:19px;color:var(--soft);margin:14px 0 24px}
+.lab-caption b{font-size:24px}
+.lab-step{padding:18px 0;border-top:1px solid var(--line)}
+.lab-step-label{font-size:17px;font-weight:600;margin-bottom:12px}
+.lab-step-row{display:flex;align-items:center;gap:18px}
+.lab-step-row button{width:52px;height:52px;border-radius:14px;border:1px solid var(--line2);background:var(--surface3);display:grid;place-items:center}
+.lab-step-row button:hover:not(:disabled){border-color:var(--c);color:var(--c)}
+.lab-step-row button:disabled{opacity:.3;cursor:default}
+.lab-step-row output{min-width:78px;text-align:center;font:600 44px var(--display);letter-spacing:-1.5px;color:var(--c)}
+.lab-step input[type=range]{width:100%;margin:14px 0 6px;accent-color:var(--c);height:6px}
+.lab-step-hint{font-size:14px;color:var(--muted)}
+.lab-calc{display:flex;align-items:stretch;justify-content:center;gap:16px;margin:34px 0 22px}
+.lab-calc>i{align-self:center;font:300 44px var(--display);color:var(--muted);font-style:normal}
+.lab-card{flex:1;max-width:300px;padding:24px 22px;border-radius:20px;border:1px solid var(--line2);background:var(--bg);display:flex;flex-direction:column;gap:8px;text-align:center}
+.lab-card span{font:500 13px var(--mono);letter-spacing:.6px;color:var(--soft)}
+.lab-card em{font:500 20px var(--mono);font-style:normal;color:var(--muted)}
+.lab-card strong{font:700 52px var(--display);letter-spacing:-2px;line-height:1.05}
+.lab-card.tf{border-color:var(--mint)}.lab-card.tf strong{color:var(--mint)}
+.lab-card.idf{border-color:var(--orange)}.lab-card.idf strong{color:var(--orange)}
+.lab-card.res{border-width:2px}
+.lab-card.res.low{border-color:#e07a7a}.lab-card.res.low strong{color:#e07a7a}
+.lab-card.res.mid{border-color:var(--orange)}.lab-card.res.mid strong{color:var(--orange)}
+.lab-card.res.high{border-color:var(--mint)}.lab-card.res.high strong{color:var(--mint)}
+.lab-verdict{padding:26px 28px;border-radius:20px;background:var(--bg);border:1px solid var(--line2);border-left-width:6px}
+.lab-verdict.low{border-left-color:#e07a7a}.lab-verdict.mid{border-left-color:var(--orange)}.lab-verdict.high{border-left-color:var(--mint)}
+.lab-meter{height:16px;border-radius:999px;background:var(--surface3);overflow:hidden}
+.lab-meter i{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,#e07a7a,var(--orange),var(--mint));transition:width .45s cubic-bezier(.2,.8,.2,1)}
+.lab-meter-scale{display:flex;justify-content:space-between;gap:12px;margin-top:8px;font-size:13px;color:var(--muted)}
+.lab-verdict h3{font-size:26px;letter-spacing:-.5px;margin:18px 0 8px}
+.lab-verdict p{font-size:19px;line-height:1.55;color:var(--soft);margin:0}
+.lab-note{font-size:15px;color:var(--muted);margin:20px 0 0;line-height:1.6}
+@media (max-width:900px){.lab{padding:24px 18px}.lab-grid{grid-template-columns:1fr}.lab-calc{flex-direction:column;align-items:center}.lab-card{max-width:none;width:100%}.lab-calc>i{font-size:30px}}
