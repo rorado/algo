@@ -178,3 +178,99 @@ body{font-size:16px;line-height:1.55}
 .lab-verdict p{font-size:19px;line-height:1.55;color:var(--soft);margin:0}
 .lab-note{font-size:15px;color:var(--muted);margin:20px 0 0;line-height:1.6}
 @media (max-width:900px){.lab{padding:24px 18px}.lab-grid{grid-template-columns:1fr}.lab-calc{flex-direction:column;align-items:center}.lab-card{max-width:none;width:100%}.lab-calc>i{font-size:30px}}
+
+/* Vector Lab: guided steps */
+.vw{margin:30px 0 100px;padding:44px;border:1px solid var(--line2);border-radius:26px;background:linear-gradient(180deg,var(--surface),var(--surface2))}
+.vw-kicker{font:500 13px var(--mono);letter-spacing:1.3px;color:var(--accent)}
+.vw-steps{list-style:none;display:flex;gap:10px;margin:18px 0 8px;padding:0;flex-wrap:wrap}
+.vw-steps button{display:flex;align-items:center;gap:10px;padding:10px 18px 10px 10px;border:2px solid var(--line2);border-radius:999px;background:var(--bg);font-size:16px;color:var(--muted)}
+.vw-steps b{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:var(--surface3);font-size:15px}
+.vw-steps .now{border-color:var(--accent);color:var(--text);font-weight:600}.vw-steps .now b{background:var(--accent);color:#14121e}
+.vw-steps .done b{background:var(--mint);color:#0d1a16}
+.vw-title{font:700 clamp(30px,4vw,48px)/1.1 var(--display);letter-spacing:-1.4px;margin:22px 0 14px}
+.vw-lead{font-size:21px;line-height:1.55;color:var(--soft);max-width:760px;margin:0 0 22px}
+.vw-lead b,.vw-note b{color:var(--text)}
+.vw-pick{display:flex;flex-wrap:wrap;gap:10px}
+.vw-pick button{padding:12px 20px;border:2px solid var(--line2);border-radius:12px;background:var(--bg);font-size:17px}
+.vw-pick button.on{border-color:var(--c);color:var(--c);font-weight:700}
+.vw-pick button:disabled{opacity:.35;cursor:default}
+.vw-quote{font-size:26px;margin:22px 0;color:var(--text);font-family:var(--display)}
+.vw-words{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px;max-width:760px}
+.vw-words li{display:grid;grid-template-columns:120px 1fr 80px;gap:16px;align-items:center;font-size:20px}
+.vw-words li.zero{opacity:.4}
+.vw-bar{height:22px;border-radius:999px;background:var(--surface3);overflow:hidden}
+.vw-bar i{display:block;height:100%;border-radius:999px;min-width:0;transition:width .4s}
+.vw-words strong{font:600 22px var(--mono);text-align:right}
+.vw-row{display:flex;flex-wrap:wrap;align-items:center;gap:12px;margin:26px 0;padding:24px;border-radius:18px;background:var(--bg);border:1px solid var(--line2)}
+.vw-br{font:300 72px var(--display);color:var(--muted);line-height:1}
+.vw-cell{min-width:92px;padding:14px 12px;text-align:center;border-radius:14px;border:2px solid var(--c);background:var(--surface2);display:flex;flex-direction:column;gap:6px}
+.vw-cell small{font-size:16px;color:var(--soft)}.vw-cell strong{font:700 30px var(--mono);color:var(--c)}
+.vw-cell.zero{border-color:var(--line2)}.vw-cell.zero strong{color:var(--muted)}
+.vw-note{font-size:19px;line-height:1.55;color:var(--soft);max-width:760px;margin:14px 0 0}
+.vw-two{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:24px}
+.vw-two>div>span{display:block;font-weight:700;font-size:17px;margin-bottom:10px}
+.vw-cmp{display:flex;flex-direction:column;gap:12px;max-width:760px;margin-bottom:26px}
+.vw-cmp-row{display:grid;grid-template-columns:120px 1fr 120px;gap:16px;align-items:center;font-size:20px}
+.vw-pair{display:flex;flex-direction:column;gap:5px}
+.vw-pair i{display:block;height:12px;border-radius:999px;min-width:3px;transition:width .4s}
+.vw-cmp-row small{font:15px var(--mono);color:var(--soft)}
+.vw-result{display:inline-flex;flex-direction:column;align-items:center;gap:2px;padding:22px 44px;border-radius:20px;border:3px solid;background:var(--bg);margin-bottom:6px}
+.vw-result span{font:500 13px var(--mono);letter-spacing:1px;color:var(--soft)}
+.vw-result strong{font:700 76px var(--display);letter-spacing:-3px;line-height:1}
+.vw-result em{font-style:normal;font-size:22px;font-weight:600}
+.vw-result.high{border-color:var(--mint)}.vw-result.high strong,.vw-result.high em{color:var(--mint)}
+.vw-result.mid{border-color:var(--orange)}.vw-result.mid strong,.vw-result.mid em{color:var(--orange)}
+.vw-result.low{border-color:#e07a7a}.vw-result.low strong,.vw-result.low em{color:#e07a7a}
+.vw-link{display:block;margin:14px 0 0;background:none;border:0;color:var(--accent);font-size:17px;text-decoration:underline;padding:6px 0}
+.vw-math{margin-top:10px;padding:18px 22px;border-radius:14px;background:var(--bg);border:1px dashed var(--line2);max-width:760px}
+.vw-math p{font-size:18px;margin:6px 0;color:var(--soft)}.vw-math b{color:var(--text)}.vw-math .vw-small{font-size:15px;color:var(--muted)}
+.vw-free{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:36px;align-items:center}
+.vw-plot{width:100%;max-width:520px;background:var(--bg);border:1px solid var(--line2);border-radius:18px;user-select:none}
+.vw-grid{stroke:var(--line)}.vw-axis{stroke:var(--soft);stroke-width:2}
+.vw-axname{fill:var(--soft);font:600 16px var(--sans)}.vw-aname{font:700 18px var(--sans)}
+.vw-presets{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:20px;font-size:16px;color:var(--muted)}
+.vw-presets button{padding:10px 16px;border:1px solid var(--line2);border-radius:999px;background:var(--surface3);font-size:16px}
+.vw-presets button:hover{border-color:var(--accent)}
+.vw-nav{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-top:40px;padding-top:26px;border-top:1px solid var(--line);color:var(--muted);font-size:16px}
+.vw-back,.vw-next{display:inline-flex;align-items:center;gap:10px;padding:15px 28px;border-radius:14px;font-size:18px;font-weight:600;border:2px solid var(--line2);background:var(--bg)}
+.vw-next{background:var(--accent);border-color:var(--accent);color:#14121e}
+.vw-back:disabled,.vw-next:disabled{opacity:.3;cursor:default}
+@media (max-width:900px){.vw{padding:22px 16px}.vw-free,.vw-two{grid-template-columns:1fr}.vw-words li,.vw-cmp-row{grid-template-columns:80px 1fr 64px;gap:10px;font-size:17px}.vw-cmp-row small{display:none}}
+.vw-words li{position:relative}.vw-why{grid-column:2/4;margin-top:-6px;font-style:normal;font-size:14px;color:var(--orange)}.vw-words li.zero .vw-why{opacity:1}
+
+/* Vector Lab: document inputs */
+.vw-docs{display:grid;gap:14px;margin:18px 0}
+.vw-doc{position:relative;display:grid;gap:6px}
+.vw-doc label{font-size:15px;font-weight:700;color:var(--c)}
+.vw-doc textarea{width:100%;box-sizing:border-box;font:inherit;font-size:18px;line-height:1.5;padding:12px 14px;border-radius:12px;border:2px solid var(--c);background:rgba(255,255,255,.04);color:inherit;resize:vertical}
+.vw-x{position:absolute;top:0;right:0;background:none;border:0;color:var(--muted);font-size:14px;cursor:pointer;text-decoration:underline}
+.vw-warn{color:#f0b778}
+.vw-axes{display:flex;gap:18px;flex-wrap:wrap;margin:14px 0;font-size:16px}
+.vw-axes select{font:inherit;font-size:17px;margin-left:8px;padding:6px 10px;border-radius:10px;background:rgba(255,255,255,.06);color:inherit;border:1px solid var(--muted)}
+
+/* Vector Lab: form controls readable in dark and light */
+.app .vw-axes select,.app .vw-doc textarea{background-color:#1b2026;color:#f2f4f6;color-scheme:dark;border:1px solid var(--line2)}
+.app .vw-doc textarea{border:2px solid var(--c)}
+.app .vw-axes select option{background-color:#1b2026;color:#f2f4f6}
+.app.light .vw-axes select,.app.light .vw-doc textarea{background-color:#fff;color:#1b1f24;color-scheme:light}
+.app.light .vw-axes select option{background-color:#fff;color:#1b1f24}
+.app .vw-doc textarea::placeholder{color:var(--muted);opacity:1}
+.app .vw-axes select{min-width:130px;cursor:pointer}
+
+/* Vector Lab + Lab colours: dark theme defaults, stronger colours for light theme */
+.app{--va:#a394ff;--vb:#68dbc1;--vc:#f0b778;--vd:#ff8fab;--ve:#7fb5ff;--vf:#c3e88d;--fieldbg:#1b2026}
+.app.light{--va:#5b46d6;--vb:#0c8a73;--vc:#b4620c;--vd:#c2395f;--ve:#2a68c9;--vf:#4f7a12}
+.app.light .vw,.app.light .lab{--accent:#5b46d6;--mint:#0c8a73;--orange:#b4620c}
+.app.light .vw-result.low,.app.light .lab-card.res.low{border-color:#c24a4a}
+.app.light .vw-result.low strong,.app.light .vw-result.low em,.app.light .lab-card.res.low strong{color:#c24a4a}
+.app.light .lab-verdict.low{border-left-color:#c24a4a}
+.app.light .vw-warn{color:#b4620c}
+.app.light .vw-steps .now b,.app.light .vw-next{color:#fff}
+.app.light .vw-steps .done b{color:#fff}
+.app.light .vw-pair i,.app.light .vw-bar i{filter:none}
+.app.light .vw-doc textarea{background-color:#fff}
+.app.light .vw-plot{background:#fff}
+
+/* light theme: body sits outside .app, so text colour must be set on .app */
+.app{color:var(--text)}
+.app.light .vw-title,.app.light .lab-head h2{color:var(--text)}

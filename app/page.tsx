@@ -24,6 +24,7 @@ import {
   X,
 } from "lucide-react";
 import Lab from "./Lab";
+import VectorLab from "./VectorLab";
 import {
   analyze,
   cosine,
@@ -1267,7 +1268,9 @@ export default function Home() {
           </div>
         </section>
 
-        <section className="explore-grid">
+        <VectorLab docs={docs} data={data} rank={rank}/>
+
+   <section className="explore-grid">
           <div className="explore-card" id="vocabulary">
             <div className="card-head">
               <div>
